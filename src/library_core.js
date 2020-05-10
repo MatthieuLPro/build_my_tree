@@ -72,7 +72,13 @@ const removeNodeWithSiblingCondition = (tree_level, node, condition) => {
     const length    = temp.length;
 
     for (let i = 0; i < length; i++) {
+        console.log("nodesAreEquivalent(temp[i], node): ", nodesAreEquivalent(temp[i], node));
+        console.log("temp[i]: ", temp[i]);
+        console.log("node: ", node);
         if (nodesAreEquivalent(temp[i], node)) {
+            console.log("siblingsRespectCondition(temp, condition): ", siblingsRespectCondition(temp, condition));
+            console.log("temp: ", temp);
+            console.log("condition: ", condition);
             if (siblingsRespectCondition(temp, condition)) {
                 temp.splice(i, 1);
                 return temp;
