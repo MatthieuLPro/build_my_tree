@@ -20,6 +20,39 @@ class Tree {
     }
 
     // CREATE //
+    addBranch(parent, new_branch) {
+        if (!isABranch(new_branch)) {
+            throw Error(`The parent: '${parent}' is not of type root or branch.`);
+        }
+
+        console.log('TRY HERE with: ', parent);
+        const parent_node = getNodeByKey([this.tree], parent);
+        if (!parent_node || !isABranchOrRoot(parent_node)) {
+            throw Error(`The parent: '${parent}' is not of type root or branch.`);
+        }
+
+        const new_tree = addNode([this.getTree], parent, new_branch);
+
+        this.setTree = new_tree[0];
+    }
+
+    addLeaf(parent, new_leaf) {
+        if (!isALeaf(new_leaf)) {
+            throw Error(`The object: '${new_leaf}' to add is not a leaf.`);
+        }
+
+        const parent_node = getNodeByKey([this.tree], parent);
+        console.log('parent: ', parent);
+        console.log('parent_node: ', parent_node);
+        if (!parent_node || !isABranchOrRoot(parent_node)) {
+            throw Error(`The parent: '${parent}' is not of type root or branch.`);
+        }
+
+        const new_tree = addNode([this.getTree], parent, new_leaf);
+
+        this.setTree = new_tree[0];
+    }
+
     createElement(parent, new_node) {
         const new_tree = addNode([this.getTree], parent, new_node);
 

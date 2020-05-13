@@ -7,7 +7,7 @@
 // Type => to see constructor type (debug mode)
 
 class TreeNode {
-    constructor(key, value, type = true) {
+    constructor(key, value, type = false) {
         this.setKey     = key;
         this.setValue   = value;
         if (type) {

@@ -131,12 +131,38 @@ const getNodeByKey = (tree_level, key) => {
     const length    = temp.length;
 
     for (let i = 0; i < length; i++) {
-        console.log('temp[i]: ', temp[i]);
         if (keysAreEquivalent(temp[i].key, key)) {
             return temp[i];
         } else {
             if (!isALeaf(temp[i].value)) {
                 if (!areLeaves(temp[i].value)) {
+                    result = getNodeByKey(temp[i].value, key);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+    }
+};
+
+// Need to check getNodeByKeyV2
+const getNodeByKeyV2 = (tree_level, key) => {
+    let temp        = tree_level;
+    let result      = null;
+    const length    = temp.length;
+
+    for (let i = 0; i < length; i++) {
+        console.log('temp[i]: ', temp[i]);
+        console.log('key: ', key);
+        if (keysAreEquivalent(temp[i].key, key)) {
+            return temp[i];
+        } else {
+            console.log('H1');
+            if (!isALeaf(temp[i].value)) {
+                console.log('H2');
+                if (!areLeaves(temp[i].value)) {
+                    console.log('H3');
                     result = getNodeByKey(temp[i].value, key);
                     if (result != null) {
                         return result;
@@ -184,6 +210,19 @@ const isALeaf = (leaf) => {
 const isBranchValueType = (branch_value) => {
     return (Array.isArray(branch_value) && branch_value.length > 0)
 };
+
+const isABranch = (branch) => {
+    return ((branch.constructor.name) === 'Branch');
+};
+
+const isARoot = (root) => {
+    return ((root.constructor.name) === 'Root');
+};
+
+const isABranchOrRoot = (object) => {
+    return ((isARoot(object) || isABranch(object)))
+};
+
 
 const areLeaves = (tree_node_value) => {
     if (Array.isArray(tree_node_value)) {
