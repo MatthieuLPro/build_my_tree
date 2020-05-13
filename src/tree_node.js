@@ -2,12 +2,17 @@
 
 // Methods list :
 // Getter & Setter
-// Node, key, value
+// Node, key, value, type
+
+// Type => to see constructor type (debug mode)
 
 class TreeNode {
-    constructor(key, value) {
+    constructor(key, value, type = true) {
         this.setKey     = key;
         this.setValue   = value;
+        if (type) {
+            this.setType = this.constructor.name;
+        }
     }
 
     get getNode() {
@@ -30,5 +35,12 @@ class TreeNode {
     }
     set setValue(new_value) {
         this.value = new_value;
+    }
+
+    get getType() {
+        return this.type;
+    }
+    set setType(new_type) {
+        this.type = new_type;
     }
 }

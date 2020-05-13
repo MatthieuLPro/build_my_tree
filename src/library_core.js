@@ -173,8 +173,16 @@ const getNodeByKeyWithParentCondition = (tree_level, key, condition) => {
 };
 
 // PREDICAT //
-const isALeaf = (tree_node_value) => {
-    return ((typeof tree_node_value) === 'string');
+const isLeafValueType = (leaf_value) => {
+    return ((typeof leaf_value) === 'string');
+};
+
+const isALeaf = (leaf) => {
+    return ((leaf.constructor.name) === 'Leaf');
+};
+
+const isBranchValueType = (branch_value) => {
+    return (Array.isArray(branch_value) && branch_value.length > 0)
 };
 
 const areLeaves = (tree_node_value) => {

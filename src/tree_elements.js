@@ -23,16 +23,22 @@ class Root extends TreeNode {
 }
 
 class Branch extends TreeNode {
-    // value should be null ?
-    // Need to finish branch constructor
     constructor(key, value) {
         super(key, value);
         this.setKey     = arguments[0];
-        this.setValue   = [];
+        this.setValue   = this.setBranchValues(value);
     }
 
     get getBranch() {
         return this.getNode;
+    }
+
+    setBranchValues(values) {
+        if (isBranchValueType(values)) {
+            return values;
+        } else {
+            return [];
+        }
     }
 
     renameBranch(new_name) {
@@ -40,20 +46,17 @@ class Branch extends TreeNode {
     }
 
     addLeaf(leaf) {
-        const new_leaf = leaf.constructor.name;
-        if (new_leaf === 'Leaf') {
+        if (isALeaf(leaf)) {
             addNode([this], this.key, leaf)
         }
     }
 
     addLeaves() {
-        if(arguments.length <= 0) {
-            return
-        }
-
-        const length = arguments.length;
-        for(let i = 0; i < length; i++) {
-            this.addLeaf(arguments[i]);
+        if (isBranchValueType(arguments)) {
+            const length = arguments.length;
+            for(let i = 0; i < length; i++) {
+                this.addLeaf(arguments[i]);
+            }
         }
     }
 }
@@ -70,7 +73,7 @@ class Leaf extends TreeNode {
 
     set setLeaf(new_leaf) {
         this.setKey = new_leaf.key || "MyLeaf";
-        if((typeof new_leaf.value) === 'string') {
+        if(isLeafValueType(this.getValue)) {
             this.setValue = new_leaf.value;
         } else {
             this.setValue = '';
