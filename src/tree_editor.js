@@ -16,5 +16,7 @@ let branch3     = new Branch('branch3', [leaf4]);
 new_tree.addBranch('root', branch1);
 new_tree.addBranch('branch1', branch2);
 new_tree.addBranch('branch2', branch3);
-// new_tree.addLeaf('branch2', leaf4);
+new_tree.addLeaf('branch2', leaf4);
+new_tree.addLeaf('root', leaf2);
+new_tree.addLeaf('branch1', leaf4);
 

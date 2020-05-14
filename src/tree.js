@@ -25,7 +25,6 @@ class Tree {
             throw Error(`The parent: '${parent}' is not of type root or branch.`);
         }
 
-        console.log('TRY HERE with: ', parent);
         const parent_node = getNodeByKey([this.tree], parent);
         if (!parent_node || !isABranchOrRoot(parent_node)) {
             throw Error(`The parent: '${parent}' is not of type root or branch.`);
@@ -42,8 +41,6 @@ class Tree {
         }
 
         const parent_node = getNodeByKey([this.tree], parent);
-        console.log('parent: ', parent);
-        console.log('parent_node: ', parent_node);
         if (!parent_node || !isABranchOrRoot(parent_node)) {
             throw Error(`The parent: '${parent}' is not of type root or branch.`);
         }

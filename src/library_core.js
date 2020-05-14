@@ -17,7 +17,7 @@ const addNode = (tree_level, parent_key, new_node) => {
             temp[i].value.push(new_node);
             return temp;
         } else {
-            if (!isALeaf(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
                 temp[i].value = addNode(temp[i].value, parent_key, new_node);
             }
         }
@@ -37,7 +37,7 @@ const addNodeWithSiblingCondition = (tree_level, parent_key, new_node, condition
                 return temp;
             }
         } else {
-            if (!isALeaf(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
                 temp[i].value = addNodeWithSiblingCondition(temp[i].value, parent_key, new_node, condition);
             }
         }
@@ -56,8 +56,8 @@ const removeNode = (tree_level, node) => {
             temp.splice(i, 1);
             return temp;
         } else {
-            if (!isALeaf(temp[i].value)) {
-                if (!areLeaves(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
+                if (isABranchOrRoot(temp[i])) {
                     temp[i].value = removeNode(temp[i].value, node);
                 }
             }
@@ -72,19 +72,13 @@ const removeNodeWithSiblingCondition = (tree_level, node, condition) => {
     const length    = temp.length;
 
     for (let i = 0; i < length; i++) {
-        console.log("nodesAreEquivalent(temp[i], node): ", nodesAreEquivalent(temp[i], node));
-        console.log("temp[i]: ", temp[i]);
-        console.log("node: ", node);
         if (nodesAreEquivalent(temp[i], node)) {
-            console.log("siblingsRespectCondition(temp, condition): ", siblingsRespectCondition(temp, condition));
-            console.log("temp: ", temp);
-            console.log("condition: ", condition);
             if (siblingsRespectCondition(temp, condition)) {
                 temp.splice(i, 1);
                 return temp;
             }
         } else {
-            if (!isALeaf(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
                 temp[i].value = removeNodeWithSiblingCondition(temp[i].value, node);
             }
         }
@@ -115,7 +109,7 @@ const getNodeByNode = (tree_level, node) => {
         if (nodesAreEquivalent(temp[i], node)) {
             return temp[i];
         } else {
-            if (!isALeaf(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
                 result = getNodeByNode(temp[i].value, node);
                 if (result != null) {
                     return result;
@@ -134,35 +128,8 @@ const getNodeByKey = (tree_level, key) => {
         if (keysAreEquivalent(temp[i].key, key)) {
             return temp[i];
         } else {
-            if (!isALeaf(temp[i].value)) {
-                if (!areLeaves(temp[i].value)) {
-                    result = getNodeByKey(temp[i].value, key);
-                    if (result != null) {
-                        return result;
-                    }
-                }
-            }
-        }
-    }
-};
-
-// Need to check getNodeByKeyV2
-const getNodeByKeyV2 = (tree_level, key) => {
-    let temp        = tree_level;
-    let result      = null;
-    const length    = temp.length;
-
-    for (let i = 0; i < length; i++) {
-        console.log('temp[i]: ', temp[i]);
-        console.log('key: ', key);
-        if (keysAreEquivalent(temp[i].key, key)) {
-            return temp[i];
-        } else {
-            console.log('H1');
-            if (!isALeaf(temp[i].value)) {
-                console.log('H2');
-                if (!areLeaves(temp[i].value)) {
-                    console.log('H3');
+            if (!isALeaf(temp[i])) {
+                if (isABranchOrRoot(temp[i])) {
                     result = getNodeByKey(temp[i].value, key);
                     if (result != null) {
                         return result;
@@ -184,7 +151,7 @@ const getNodeByKeyWithSiblingCondition = (tree_level, key, condition) => {
                 return temp[i];
             }
         } else {
-            if (!isALeaf(temp[i].value)) {
+            if (!isALeaf(temp[i])) {
                 result = getNodeByKeyWithSiblingCondition(temp[i].value, key, condition);
                 if (result != null) {
                     return result;
@@ -260,3 +227,5 @@ const siblingsRespectCondition = (branch, value_condition) => {
     }
     return false;
 };
+
+
