@@ -26,5 +26,5 @@ const syntaxHighlight = (json) => {
     });
 };
 
-const str = JSON.stringify(new_tree, undefined, 4);
-output(syntaxHighlight(str));
+// const str = JSON.stringify(new_tree, undefined, 4);
+// output(syntaxHighlight(str));

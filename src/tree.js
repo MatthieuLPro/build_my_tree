@@ -10,7 +10,7 @@ class Tree {
         this.tree = new_tree;
     }
 
-    // SHOW //
+    // GET //
     showElementByKey(key) {
         return getNodeByKey([this.getTree], key);
     }
@@ -19,7 +19,34 @@ class Tree {
         return getNodeByNode([this.getTree], node);
     }
 
+    // TODO: getBranch arg -> could be a string or node ?! (call showEltByKey || showEltByNode ?)
+    getBranch(branch_name) {
+        const branch = this.showElementByKey(branch_name);
+
+        if (!branch) {
+            throw Error(`The branch does not exist.`);
+        }
+        if (!isABranch(branch)) {
+            throw Error(`The name is not referenced as a branch object.`);
+        }
+        return branch;
+    }
+
+    // TODO: getLeaf arg -> could be a string or node ?! (call showEltByKey || showEltByNode ?)
+    getLeaf(leaf_name) {
+        const leaf = this.showElementByKey(leaf_name);
+        if (!leaf) {
+            throw Error(`The leaf does not exist.`);
+        }
+        if (!isALeaf(leaf)) {
+            throw Error(`The name is not referenced as a leaf object.`);
+        }
+        return leaf;
+    }
+
     // CREATE //
+    // TODO: Create common function ?
+    // TODO: Update this method into -> addBranch to root ?
     addBranch(parent, new_branch) {
         const parent_node = getNodeByKey([this.tree], parent);
         if (!parent_node) {
@@ -38,6 +65,7 @@ class Tree {
         this.setTree = new_tree[0];
     }
 
+    // TODO: Update this method into -> addLeaf to root ?
     addLeaf(parent, new_leaf) {
         const parent_node = getNodeByKey([this.tree], parent);
         if (!parent_node ) {
@@ -56,99 +84,47 @@ class Tree {
         this.setTree = new_tree[0];
     }
 
-    // createElement(parent, new_node) {
-    //     const new_tree = addNode([this.getTree], parent, new_node);
-    //
-    //     if (new_tree[0] != null) {
-    //         this.setTree = new_tree[0];
-    //     }
-    // };
-
-    // UPDATE //
-    updateElement(parent, element_to_update) {
-        let node_to_update;
-        // Need to refacto this
-        const element_constructor = element_to_update.constructor.name;
-        if (element_constructor === 'Leaf' || element_constructor === 'Branch') {
-            node_to_update = this.showElementByNode(element_to_update);
-            if (node_to_update == null) {
-                return new Error("Le parametre element_to_update est invalid.");
-            }
-        } else {
-            return new Error("Le parametre element_to_update est invalid.");
-        }
-
-        if (!this.showElementByKey(parent)) {
-            return new Error("Le parametre parent est invalid.");
-        }
-
-        const new_tree = updateNode([this.getTree], parent, node_to_update.key, node_to_update.value);
-
-        if (new_tree[0] != null) {
-            this.setTree = new_tree[0];
+    // MODIFY TREE ELEMENT //
+    addElementToBranch(branch_name, value_to_add) {
+        const branch = this.getBranch(branch_name);
+        if (isABranch(value_to_add)) {
+            branch.addBranch(value_to_add);
+        } else if (isALeaf(value_to_add)) {
+            branch.addLeaf(value_to_add);
         }
     }
 
-    // TODO: Create this function
-    // updateBranch(branch_updated, parent = null) {
-    //     // Need to check if branch_updated is a branch
-    //     if (!isABranch(branch_updated)) {
-    //         throw Error(`The branch to add is not of type branch.`);
-    //     }
-    //     // Need to verify if branch is unique ?
-    //     if (!parent && !branchIsUnique()) {
-    //         throw Error(`The branch is not unique and need a parent name.`);
-    //     }
-    //
-    //     // If yes no need parent => find the existing branch and update it
-    //     // else verify if parent exist if yes => find the existing branch with specific parent and update it
-    //
-    //     let node_to_update;
-    //     // Need to refacto this
-    //     const element_constructor = element_to_update.constructor.name;
-    //     if (element_constructor === 'Leaf' || element_constructor === 'Branch') {
-    //         node_to_update = this.showElementByNode(element_to_update);
-    //         if (node_to_update == null) {
-    //             return new Error("Le parametre element_to_update est invalid.");
-    //         }
-    //     } else {
-    //         return new Error("Le parametre element_to_update est invalid.");
-    //     }
-    //
-    //     if (!this.showElementByKey(parent)) {
-    //         return new Error("Le parametre parent est invalid.");
-    //     }
-    //
-    //     const new_tree = updateNode([this.getTree], parent, node_to_update.key, node_to_update.value);
-    //
-    //     if (new_tree[0] != null) {
-    //         this.setTree = new_tree[0];
-    //     }
-    // }
+    modifyLeaf(leaf_name, new_value) {
+        const leaf = this.getLeaf(leaf_name);
+        if (isLeafValueType(new_value)) {
+            leaf.updateValue(new_value);
+        }
+    }
 
-    // DELETE //
-    // Need to check 
-    deleteElement(key_to_remove, sibling_condition = null) {
-        let node_to_remove;
+    // REMOVE TREE ELEMENT //
+    removeBranch(branch_name) {
+        const branch = this.getBranch(branch_name);
 
-        // Need to refacto this
-        if ((typeof key_to_remove) === 'string') {
-            node_to_remove = this.showElementByKey(key_to_remove);
-            if (node_to_remove == null) {
-                return new Error("Le parametre key_to_remove est introuvable dans l'arbre.");
-            }
-        } else {
-            return new Error("Le parametre key_to_remove est invalid.");
+        if (!branch) {
+            throw Error(`The branch name does not exist in the tree.`);
+        }
+        if (!isABranch(branch)) {
+            throw Error(`The element to remove is not of type branch.`);
         }
 
-        let new_tree;
-        if (sibling_condition == null) {
-            new_tree = removeNode([this.getTree], node_to_remove);
-        } else {
-            new_tree = removeNodeWithSiblingCondition([this.getTree], node_to_remove, sibling_condition);
+        removeNode([this.getTree], branch);
+    }
+
+    removeLeaf(leaf_name) {
+        const leaf = this.getLeaf(leaf_name);
+
+        if (!leaf) {
+            throw Error(`The leaf name does not exist in the tree.`);
         }
-        if (new_tree[0] != null) {
-            this.setTree = new_tree[0];
+        if (!isALeaf(leaf)) {
+            throw Error(`The element to remove is not of type leaf.`);
         }
+
+        removeNode([this.getTree], leaf);
     }
 }

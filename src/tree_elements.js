@@ -96,4 +96,12 @@ class Leaf extends TreeNode {
             this.setValue = '';
         }
     }
+
+    renameLeaf(new_name) {
+        this.setKey = new_name;
+    }
+
+    updateValue(new_value) {
+        this.setValue = new_value;
+    }
 }
