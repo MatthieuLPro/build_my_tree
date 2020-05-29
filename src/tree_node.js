@@ -27,6 +27,10 @@ class TreeNode {
         return this.key;
     }
     set setKey(new_key) {
+        // FIXME: VERIFY THIS ERROR
+        // if ((typeof new_key) !== 'string') {
+        //     throw Error(`The new name is not of type string.`);
+        // }
         this.key = new_key;
     }
 
@@ -42,5 +46,18 @@ class TreeNode {
     }
     set setType(new_type) {
         this.type = new_type;
+    }
+}
+
+class JsonNode {
+    constructor(new_node) {
+        this.setNode = new_node;
+    }
+
+    get getNode() {
+        return Object.keys(this)[0];
+    }
+    set setNode(new_node) {
+        this[new_node.key] = new_node.value;
     }
 }

@@ -171,7 +171,11 @@ const isLeafValueType = (leaf_value) => {
 };
 
 const isALeaf = (leaf) => {
-    return ((leaf.constructor.name) === 'Leaf');
+    try {
+        return ((leaf.constructor.name) === 'Leaf');
+    } catch(e) {
+        return false;
+    }
 };
 
 const isBranchValueType = (branch_value) => {
@@ -179,7 +183,11 @@ const isBranchValueType = (branch_value) => {
 };
 
 const isABranch = (branch) => {
-    return ((branch.constructor.name) === 'Branch');
+    try {
+        return ((branch.constructor.name) === 'Branch');
+    } catch(e) {
+        return false;
+    }
 };
 
 const isARoot = (root) => {
@@ -227,5 +235,10 @@ const siblingsRespectCondition = (branch, value_condition) => {
     }
     return false;
 };
+
+// TODO: Create this function
+// const branchIsUnique = (branch) => {
+//
+// }
 
 

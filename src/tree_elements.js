@@ -25,7 +25,7 @@ class Root extends TreeNode {
 class Branch extends TreeNode {
     constructor(key, value) {
         super(key, value);
-        this.setKey     = arguments[0];
+        this.setKey     = arguments[0] || 'MyBranch';
         this.setValue   = this.setBranchValues(value);
     }
 
@@ -52,11 +52,28 @@ class Branch extends TreeNode {
     }
 
     addLeaves() {
-        if (isBranchValueType(arguments)) {
+        // FIXME: WHY THIS VERIFICATION ?
+        // if (isBranchValueType(arguments)) {
             const length = arguments.length;
             for(let i = 0; i < length; i++) {
                 this.addLeaf(arguments[i]);
             }
+        // }
+    }
+
+    addBranch(branch) {
+        if (branch === this) {
+            throw Error(`You can't add a branch to itself.`);
+        }
+        if (isABranch(branch)) {
+            addNode([this], this.key, branch)
+        }
+    }
+
+    addBranches() {
+        const length = arguments.length;
+        for(let i = 0; i < length; i++) {
+            this.addBranch(arguments[i]);
         }
     }
 }
